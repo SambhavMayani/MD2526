@@ -75,6 +75,8 @@ Decide if you need to declare some more factor or date
 
 descriptiva<-function(X, nom){
   if (!(is.numeric(X) || class(X)=="Date")){ 
+    # Categoricas
+    
     frecs<-table(as.factor(X), useNA="ifany")
     proportions<-frecs/n
     #ojo, decidir si calcular porcentages con o sin missing values
@@ -103,6 +105,8 @@ descriptiva<-function(X, nom){
        #decide breaks: weeks, months, quarters...
        hist(X,breaks="weeks")
      }else{
+       # Numericas
+       
        hist(X, main=paste("Histogram of", nom))
        boxplot(X, horizontal=TRUE, main=paste("Boxplot of",nom))
        print("Extended Summary Statistics")
