@@ -4,11 +4,10 @@
 
 setwd("C:/Users/sambh/Desktop/UNI/4-Q1/MD/MD")
 
+dd <- read.table("credsco.csv",header=T);
 
-dd <- read.table("Myocardial_infarction_complications_Database.csv",header=T);
-
-#dd <- read.table("Myocardial_infarction_complications_Database.csv",header=T, sep=",",na.strings="\"\"");
-dd <- read.table("Myocardial_infarction_complications_Database.csv",header=T, sep=",");
+#dd <- read.table("credsco.csv",header=T, sep=";",na.strings="\"\"");
+dd <- read.table("credsco.csv",header=T, sep=";");
                   
 class(dd)
 dim(dd)
@@ -152,14 +151,14 @@ write.table(dd, file = "credscoCategoriques.csv", sep = ";", na = "NA", dec = ".
 
 #Multivalued
 
-components<- c(indexes of columns containing modalities of the variable)
-freqs<-NULL
-for (k in components){
-     newvalues<-c(paste(names(dd)[k],"Si",sep"")), "No)
-     dd[,k]<-newvalues[match(dd[,k],c("Si","No))]
-	freqs[k]<-table(dd[,1])[1]
-}
-barplot(freqs)
+# components<- c(indexes of columns containing modalities of the variable)
+# freqs<-NULL
+# for (k in components){
+#      newvalues<-c(paste(names(dd)[k],"Si",sep"")), "No)
+#      dd[,k]<-newvalues[match(dd[,k],c("Si","No))]
+# 	freqs[k]<-table(dd[,1])[1]
+# }
+# barplot(freqs)
 
 
 class(Dictamen)
@@ -220,5 +219,4 @@ boxplot(dd[,10])
 
 #save transformation
 write.table(dd, file = "credscoCategoriques.csv", sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE)
-
 
