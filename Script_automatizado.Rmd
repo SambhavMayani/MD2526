@@ -158,6 +158,13 @@ for(k in actives){
               labels = c("unknown (alive)" ,"cardiogenic shock	","pulmonary edema	",
                          "myocardial rupture","progress of congestive heart failure",
                          "thromboembolism", "asystole", "ventricular fibrillation"))
+    GB <- factor(dd$GB,                      #LA MORTALITY?
+              levels= c(0,1,2,3), 
+              labels = c("there is no essential hypertension","Stage 1","Stage 2","Stage 3"))
+    SIM_GIPERT <- factor(dd$SIM_GIPERT,                      #LA MORTALITY?
+              levels= c(0,1), 
+              labels = c("no", "yes"))
+    
     
     
     print(paste("variable ", k, ":", names(dd)[k] ))
