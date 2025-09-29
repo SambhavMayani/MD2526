@@ -57,6 +57,7 @@ boxplot(Precio.del.bien.financiado,  main=paste("Boxplot of", names(dd)[14]))
 
 summary(Dictamen)
 boxplot(Dictamen)
+
 #end learning
 
 # DECLARE CATEGORICAL 
@@ -95,9 +96,11 @@ class(dd[,1])
 summary(Dictamen)
 summary(dd[,1])
 barplot(table(Dictamen))
+
 pie(table(Dictamen))
 
 pie(table(Vivienda))
+
 
 #labelling modalities, when required. Check dictionary. WARNING: Sequential assignment with levels
 

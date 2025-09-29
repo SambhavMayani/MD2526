@@ -33,14 +33,12 @@ dataset<-"Myocardial_infarction_complications_Database"
 ```
 
 Set the folder where the word file is going to be generated
-ToDo: This should be a relative path 
 ```{r}
 
-#setwd("./Documents/UNI/MD/MD2526/")
-#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-dd <- read.table("Myocardial_infarction_complications_Database.csv", header=T, sep=",");
+setwd("C:/Users/sambh/Desktop/UNI/4-Q1/MD/MD")
+dd <- read.table("Filtered_dataset.csv", header=T, sep=",");
 
-```
+```  
 
 Check the type of the R object created for the dataset
 
@@ -55,7 +53,7 @@ class(dd)
 ```
 
 Get dimensions of the dataset
-```{r}
+````{r}
 dim(dd)
 n<-dim(dd)[1]
 K<-dim(dd)[2]
@@ -67,11 +65,42 @@ Check the variables
 
 ```{r}
 names(dd)
-data.frame(ID = seq_along(dd), Name = names(dd))
 ```
 Decide if you need to declare some more factor or date
 
+SEX <- factor(SEX, 
+              levels= c(0,1), 
+              labels = c("Female", "Male"))
+INF_ANAM <- factor(INF_ANAM, 
+              levels= c(0,1,2,3), 
+              labels = c("zero", "one", "two", "three and more"))
+STENOK_AN <- factor(STENOK_AN, 
+              levels= c(0,1,2,3,4,5), 
+              labels = c("never", "during the last year", "one year ago", 
+              "three and more"))
+LET_IS <- factor(LET_IS,                      #LA MORTALITY?
+              levels= c(0,1), 
+              labels = c("Survived", "Death"))
+
 ```{r}
+
+
+# # summary(dd): Aplica la función summary() a TODAS las columnas de la tabla 'dd'. Es una vista general muy útil.
+# summary(dd)
+# 
+# # Pasa tu histograma a escala de densidad (freq=FALSE)
+# hist(dd$AGE, freq=FALSE, main="Histograma y Curva Normal para Edad", xlab="Edad") 
+# 
+# # Añade una curva de densidad normal (linea azul)
+# curve(dnorm(x, mean=mean(dd$AGE), sd=sd(dd$AGE)), 
+#       add=TRUE, col="blue", lwd=2)
+# 
+# qqnorm(dd$AGE, main = "QQ Plot of the Age") # Crea el gráfico Q-Q
+# qqline(dd$AGE, col="red") # Añade la línea de referencia normal
+# 
+# shapiro.test(dd$AGE)
+
+
 
 descriptiva<-function(X, nom){
   if (!(is.numeric(X) || class(X)=="Date")){ 
@@ -89,14 +118,7 @@ descriptiva<-function(X, nom){
     print(sort(frecs, decreasing=TRUE))
     print("Relative frequency table (proportions) sorted")
     print(sort(proportions, decreasing=TRUE))
-    
-    print("Q-Q plot",)
-    qqnorm(X, main = "QQ Plot of the Age") # Crea el gráfico Q-Q
-    qqline(X, col="red") # Añade la línea de referencia normal
-
-    shapiro.test(dd$AGE)
    }else{
-     #això sobra
      if(class(X)=="Date"){
        print(summary(X))
        print(sd(X))
@@ -109,23 +131,17 @@ descriptiva<-function(X, nom){
        print(summary(X))
        print(paste("sd: ", sd(X, na.rm=TRUE)))
        print(paste("vc: ", sd(X, na.rm=TRUE)/mean(X, na.rm=TRUE)))
-       print("Q-Q plot ")
-      qqnorm(X, main = "QQ Plot of the Age") # Crea el gráfico Q-Q
-      qqline(X, col="red") # Añade la línea de referencia normal
-
-      shapiro<- shapiro.test(X)
-      print(shapiro)
       }
    }
 }
 
-#dataset<-dd
-#actives<-c(1:K)
-#colDate<-1
-#if (dataset=="platjaDaro")
-#  {dd[,colDate]<-as.Date(dd[, colDate], format="%d/%m/%y %h:%m:%s")
-#   actives<-c(3:44)
-#   }
+dataset<-dd
+actives<-c(1:K)
+colDate<-1
+if (dataset=="platjaDaro")
+  {dd[,colDate]<-as.Date(dd[, colDate], format="%d/%m/%y %h:%m:%s")
+   actives<-c(3:44)
+   }
 
 ```
 
@@ -137,35 +153,10 @@ Basic descriptive analysis for numerical variables
 listOfColors<-rainbow(39)
 
 par(ask=TRUE)
+
 for(k in actives){
-# If per fer la descriptiva de les variables que ens interessen (estan identificades per una id númerica. corre data.frame... que està més amunt per veure la correspondència)
-  if(k == 2 || k == 37 ||k == 38 ||k == 84 ||k == 86 ||k == 90  || k == 89 || k == 3|| k == "SMOKE" || k == "DIABETES" ||k == "HYPERTENSION" ||k == "INF_ANAM" ||k == "STENOK_ANAM" ||k == "CHD_ANAM" ||k == "MORTALITY" ||k == "COM_SUM"){
-    
-    # esto es para cambiar el tipo de las categoricas
-    
-    SEX <- factor(SEX, 
-              levels= c(0,1), 
-              labels = c("Female", "Male"))
-    INF_ANAM <- factor(INF_ANAM, 
-              levels= c(0,1,2,3), 
-              labels = c("zero", "one", "two", "three and more"))
-    STENOK_AN <- factor(STENOK_AN, 
-              levels= c(0,1,2,3,4,5), 
-              labels = c("never", "during the last year", "one year ago", 
-              "three and more"))
-    LET_IS <- factor(LET_IS,                      #LA MORTALITY?
-              levels= c(0,1), 
-              labels = c("Survived", "Death"))
-    
-    
-    print(paste("variable ", k, ":", names(dd)[k] ))
-    
-    
-    
-    descriptiva(dd[,k], names(dd)[k])
-    
-    
-  }
+  print(paste("variable ", k, ":", names(dd)[k] ))
+  descriptiva(dd[,k], names(dd)[k])
 }
 par(ask=FALSE)
 
