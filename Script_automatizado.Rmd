@@ -1,7 +1,9 @@
 ---
-  output: word_document
-editor_options: 
-  chunk_output_type: console
+output:
+  html_document:
+    df_print: paged
+  word_document: default
+editor_options: null
 ---
   #7TotaldescriptivaClean5.Rmd
   #install.packages("rmarkdown")
@@ -26,7 +28,7 @@ WARNING: data must have been properly declared before (factors, dates...)
 #dataset<-"planta"
 
 
-dataset<-"Myocardial_infarction_complications_Database"
+dataset<-"Filtered_dataset"
 
 
 
@@ -38,7 +40,7 @@ ToDo: This should be a relative path
 
 #setwd("./Documents/UNI/MD/MD2526/")
 #setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-dd <- read.table("Myocardial_infarction_complications_Database.csv", header=T, sep=",");
+dd <- read.table("Filtered_dataset.csv", header=T, sep=",");
 
 ```
 
@@ -74,7 +76,7 @@ Decide if you need to declare some more factor or date
 ```{r}
 
 descriptiva<-function(X, nom){
-  if (!(is.numeric(X) || class(X)=="Date")){ 
+  if (!(is.numeric(X))){ 
     # Categoricas
     
     frecs<-table(as.factor(X), useNA="ifany")
@@ -92,19 +94,8 @@ descriptiva<-function(X, nom){
     print("Relative frequency table (proportions) sorted")
     print(sort(proportions, decreasing=TRUE))
     
-    print("Q-Q plot",)
-    qqnorm(X, main = "QQ Plot of the Age") # Crea el gráfico Q-Q
-    qqline(X, col="red") # Añade la línea de referencia normal
-
-    shapiro.test(dd$AGE)
-   }else{
-     #això sobra
-     if(class(X)=="Date"){
-       print(summary(X))
-       print(sd(X))
-       #decide breaks: weeks, months, quarters...
-       hist(X,breaks="weeks")
-     }else{
+   }
+  else{
        # Numericas
        
        hist(X, main=paste("Histogram of", nom))
@@ -114,17 +105,17 @@ descriptiva<-function(X, nom){
        print(paste("sd: ", sd(X, na.rm=TRUE)))
        print(paste("vc: ", sd(X, na.rm=TRUE)/mean(X, na.rm=TRUE)))
        print("Q-Q plot ")
-      qqnorm(X, main = "QQ Plot of the Age") # Crea el gráfico Q-Q
+      qqnorm(X, main = paste("QQ Plot of", nom)) # Crea el gráfico Q-Q
       qqline(X, col="red") # Añade la línea de referencia normal
 
       shapiro<- shapiro.test(X)
       print(shapiro)
-      }
-   }
+  }
+   
 }
 
 #dataset<-dd
-#actives<-c(1:K)
+actives<-c(1:K)
 #colDate<-1
 #if (dataset=="platjaDaro")
 #  {dd[,colDate]<-as.Date(dd[, colDate], format="%d/%m/%y %h:%m:%s")
@@ -140,34 +131,50 @@ Basic descriptive analysis for numerical variables
 ```{r, echo=FALSE}
 listOfColors<-rainbow(39)
 
-par(ask=TRUE)
-for(k in actives){
-# If per fer la descriptiva de les variables que ens interessen (estan identificades per una id númerica. corre data.frame... que està més amunt per veure la correspondència)
-  if(k == 2 || k == 37 ||k == 38 ||k == 84 ||k == 86 ||k == 90  || k == 89 || k == 3|| k == "SMOKE" || k == "DIABETES" ||k == "HYPERTENSION" ||k == "INF_ANAM" ||k == "STENOK_ANAM" ||k == "CHD_ANAM" ||k == "MORTALITY" ||k == "COM_SUM"){
+
+# esto es para cambiar el tipo de las categoricas
     
-    # esto es para cambiar el tipo de las categoricas
-    
-    SEX <- factor(dd$SEX, 
+    dd$SEX <- factor(dd$SEX, 
               levels= c(0,1), 
               labels = c("Female", "Male"))
-    INF_ANAM <- factor(dd$INF_ANAM, 
+    dd$INF_ANAM <- factor(dd$INF_ANAM, 
               levels= c(0,1,2,3), 
               labels = c("zero", "one", "two", "three and more"))
-    STENOK_AN <- factor(dd$STENOK_AN, 
-              levels= c(0,1,2,3,4,5), 
+    dd$STENOK_AN <- factor(dd$STENOK_AN, 
+              levels= c(0,1,2,3,4,5,6), 
               labels = c("never", "during the last year", "one year ago", 
-                         "three and more"))
-    LET_IS <- factor(dd$LET_IS,                      #LA MORTALITY?
+                         "two years ago", "three years ago", "4-5 years ago", "more than 5 years ago"))
+    dd$LET_IS <- factor(dd$LET_IS,                      
               levels= c(0,1,2,3,4,5,6,7), 
               labels = c("unknown (alive)" ,"cardiogenic shock	","pulmonary edema	",
                          "myocardial rupture","progress of congestive heart failure",
                          "thromboembolism", "asystole", "ventricular fibrillation"))
-    GB <- factor(dd$GB,                      #LA MORTALITY?
+    dd$GB <- factor(dd$GB,                      
               levels= c(0,1,2,3), 
               labels = c("there is no essential hypertension","Stage 1","Stage 2","Stage 3"))
-    SIM_GIPERT <- factor(dd$SIM_GIPERT,                      #LA MORTALITY?
+    dd$SIM_GIPERT <- factor(dd$SIM_GIPERT,                      
               levels= c(0,1), 
               labels = c("no", "yes"))
+    dd$ZSN_A <- factor(dd$ZSN_A,
+              ordered = TRUE,                           # EN R NO SE PUEDE HACER ORDEN PARCIAL! ASÍ QUE LO DEJAMOS ASÍ
+              levels= c(0,1,2,3,4), 
+              labels = c("there is no chronic heart failure",
+                         "I stage",
+                         "IIÐ stage (heart failure due to right ventricular systolic dysfunction)	",
+                         "IIÐ stage (heart failure due to left ventricular systolic dysfunction)",
+                         "IIB stage (heart failure due to left and right ventricular systolic dysfunction)"))
+    dd$endocr_01 <- factor(dd$endocr_01,                      
+              levels= c(0,1), 
+              labels = c("no", "yes"))
+
+par(ask=TRUE)
+for(k in actives){
+# If per fer la descriptiva de les variables que ens interessen (estan identificades per una id númerica. corre data.frame... que està més amunt per veure la correspondència)
+  
+  # QUITO EL IF PARA PROBAR, CREO QUE NO HACE FALTA PORQUE EL DATASET FILTRADO SOLO TIENE COLUMNAS QUE NOS INTERESAN
+  # if(k == 2 || k == 37 ||k == 38 ||k == 84 ||k == 86 ||k == 90  || k == 89 || k == 3|| k == "SMOKE" || k == "DIABETES" ||k == "HYPERTENSION" ||k == "INF_ANAM" ||k == "STENOK_ANAM" ||k == "CHD_ANAM" ||k == "MORTALITY" ||k == "COM_SUM"){
+    
+    if (k != 1) { # para omitir el ID
     
     
     
