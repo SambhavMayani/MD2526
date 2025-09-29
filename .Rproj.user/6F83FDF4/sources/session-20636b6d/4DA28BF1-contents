@@ -143,19 +143,21 @@ for(k in actives){
     
     # esto es para cambiar el tipo de las categoricas
     
-    SEX <- factor(SEX, 
+    SEX <- factor(dd$SEX, 
               levels= c(0,1), 
               labels = c("Female", "Male"))
-    INF_ANAM <- factor(INF_ANAM, 
+    INF_ANAM <- factor(dd$INF_ANAM, 
               levels= c(0,1,2,3), 
               labels = c("zero", "one", "two", "three and more"))
-    STENOK_AN <- factor(STENOK_AN, 
+    STENOK_AN <- factor(dd$STENOK_AN, 
               levels= c(0,1,2,3,4,5), 
               labels = c("never", "during the last year", "one year ago", 
-              "three and more"))
-    LET_IS <- factor(LET_IS,                      #LA MORTALITY?
-              levels= c(0,1), 
-              labels = c("Survived", "Death"))
+                         "three and more"))
+    LET_IS <- factor(dd$LET_IS,                      #LA MORTALITY?
+              levels= c(0,1,2,3,4,5,6,7), 
+              labels = c("unknown (alive)" ,"cardiogenic shock	","pulmonary edema	",
+                         "myocardial rupture","progress of congestive heart failure",
+                         "thromboembolism", "asystole", "ventricular fibrillation"))
     
     
     print(paste("variable ", k, ":", names(dd)[k] ))
