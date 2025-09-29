@@ -1,0 +1,96 @@
+---
+title: "Analisis Bivariant"
+author: "Grup5-MD"
+date: "2025-09-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+# Ajustar la ruta al dataset
+setwd("C:/Users/AtoshiiPC/Desktop/UNI/7E QUADRI/MD/BBDD")
+dd <- read.csv("Filtered_dataset.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+
+# Función para convertir a factor variables de texto con pocas modalidades
+auto_factorize <- function(df, max_levels = 30) {
+  for (nm in names(df)) {
+    col <- df[[nm]]
+    if (is.character(col)) {
+      uniq <- length(unique(col[!is.na(col)]))
+      if (uniq <= max_levels) df[[nm]] <- factor(col)
+    }
+    if (is.logical(col)) df[[nm]] <- factor(col, levels = c(FALSE, TRUE))
+  }
+  df
+}
+dd <- auto_factorize(dd)
+
+n <- nrow(dd)
+K <- ncol(dd)
+names(dd)
+
+# Paquete opcional
+if (!requireNamespace("psych", quietly = TRUE)) {
+  install.packages("psych")
+}
+library(psych)
+
+# Funciones auxiliares
+is_numeric_var <- function(x) is.numeric(x) || is.integer(x)
+is_categorical_var <- function(x) is.factor(x) || is.character(x) || is.logical(x)
+
+# Lista de combinaciones de variables
+vars <- names(dd)
+combos <- combn(vars, 2, simplify = FALSE)
+```
+
+```{r echo=FALSE}
+# Loop para análisis
+for (pair in combos) {
+  v1 <- pair[1]; v2 <- pair[2]
+  x <- dd[[v1]]; y <- dd[[v2]]
+
+  cat("\n##", v1, "vs", v2, "\n")
+
+  if (is_numeric_var(x) && is_numeric_var(y)) {
+    # NUMERIC vs NUMERIC
+    plot(x, y, main = paste("Scatter:", v1, "vs", v2), xlab = v1, ylab = v2)
+    if (sum(!is.na(x) & !is.na(y)) > 2) {
+      abline(lm(y ~ x), col="red", lwd=2)
+      print(cor.test(x, y))
+    }
+
+  } else if ((is_numeric_var(x) && is_categorical_var(y)) ||
+             (is_categorical_var(x) && is_numeric_var(y))) {
+    # NUMERIC vs CATEGORICAL
+    if (is_numeric_var(x)) {
+      num <- x; catvar <- factor(y)
+      num_name <- v1; cat_name <- v2
+    } else {
+      num <- y; catvar <- factor(x)
+      num_name <- v2; cat_name <- v1
+    }
+
+    boxplot(num ~ catvar, main = paste("Boxplot:", num_name, "by", cat_name),
+            xlab = cat_name, ylab = num_name)
+    if (length(levels(catvar)) <= 10) {
+      hist(num, main = paste("Histograma de", num_name), xlab = num_name)
+    }
+    print(psych::describeBy(num, group = catvar, mat = TRUE))
+
+  } else if (is_categorical_var(x) && is_categorical_var(y)) {
+    # CATEGORICAL vs CATEGORICAL
+    ttab <- table(x, y, useNA = "ifany")
+    barplot(ttab, beside = TRUE, legend.text = TRUE, main = paste("Barplot:", v1, "vs", v2))
+    print(ttab)
+    if (all(dim(ttab) > 1)) {
+      print(chisq.test(ttab))
+    }
+  }
+}
+
+
+```
+
