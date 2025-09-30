@@ -91,48 +91,84 @@ for (pair in combos) {
 
   if (is_numeric_var(x) && is_numeric_var(y)) {
     # NUMERIC vs NUMERIC
-    plot(x, y, main = paste("Scatter:", v1, "vs", v2), xlab = v1, ylab = v2)
+    old_par <- par(no.readonly = TRUE)
+    par(mar = c(5, 4, 4, 2))
+    
+    plot(x, y, main = paste("Scatter:", v1, "vs", v2), 
+         xlab = v1, ylab = v2)
+    
     if (sum(!is.na(x) & !is.na(y)) > 2) {
       abline(lm(y ~ x), col="red", lwd=2)
-      print(cor.test(x, y))
+      
+      # Correlación adaptativa
+      if (length(unique(x)) > 10 && length(unique(y)) > 10) {
+        print(cor.test(x, y, method = "pearson"))
+      } else {
+        print(cor.test(x, y, method = "spearman"))
+      }
     }
+    
+    par(old_par)
 
   } else if ((is_numeric_var(x) && is_categorical_var(y)) ||
-             (is_categorical_var(x) && is_numeric_var(y))) {
-    # NUMERIC vs CATEGORICAL
-    if (is_numeric_var(x)) {
-      num <- x; catvar <- factor(y)
-      num_name <- v1; cat_name <- v2
-    } else {
-      num <- y; catvar <- factor(x)
-      num_name <- v2; cat_name <- v1
-    }
-
-    boxplot(num ~ catvar, main = paste("Boxplot:", num_name, "by", cat_name),
-            xlab = cat_name, ylab = num_name)
-    
+           (is_categorical_var(x) && is_numeric_var(y))) {
+  # NUMERIC vs CATEGORICAL
+  if (is_numeric_var(x)) {
+    num <- x; catvar <- factor(y)
+    num_name <- v1; cat_name <- v2
+  } else {
+    num <- y; catvar <- factor(x)
+    num_name <- v2; cat_name <- v1
+  }
+  old_par <- par(no.readonly = TRUE)
+  
+  max_label_length <- max(nchar(levels(catvar)))
+  bottom_margin <- ifelse(max_label_length > 10, 12, 
+                         ifelse(max_label_length > 6, 10, 8))
+  
+  par(mar = c(bottom_margin, 4, 4, 2))  # Margen inferior dinámico
+  boxplot(num ~ catvar, 
+          main = paste("Boxplot:", num_name, "by", cat_name),
+          xlab = "",  # Eliminar label del eje X
+          ylab = num_name,
+          las = 2, cex.axis = 0.8)
+  
+  mtext(cat_name, side = 1, line = bottom_margin - 2)
+  
+  par(old_par)
     
     if (length(levels(catvar)) <= 10) {
-      hist(num, main = paste("Histograma de", num_name), xlab = num_name)
+      cats <- levels(catvar)
+      old_par <- par(no.readonly = TRUE) 
+
+      ncat <- length(cats)
+      ncols <- ceiling(sqrt(ncat))
+      nrows <- ceiling(ncat / ncols)
+
+      par(mfrow = c(nrows, ncols), mar = c(4, 4, 4, 2))
+
+      for (c in cats) {
+        hist(num[catvar == c],
+             main = paste(num_name, "for", c),
+             xlab = num_name,
+             cex.main = 0.8)
+      }
+
+      par(old_par)
     }
-    
     
     print(psych::describeBy(num, group = catvar, mat = TRUE))
 
   } else if (is_categorical_var(x) && is_categorical_var(y)) {
     # CATEGORICAL vs CATEGORICAL
-    
     ttab <- table(x, y, useNA = "ifany")
     
-    # 1. Guarda la configuración original de los parámetros gráficos
     old_par <- par(no.readonly = TRUE) 
-    
-    # 2. Establece los nuevos márgenes (ej: 10 líneas para el margen inferior)
     par(mar = c(10, 4, 4, 2)) 
     
-    barplot(ttab, las=3, cex.names=0.7, beside=TRUE, 
-        legend.text=TRUE, 
-        main=paste("Barplot:", v1, "vs", v2))    
+    barplot(ttab, las = 2, cex.names = 0.7, beside = TRUE, 
+            legend.text = TRUE, 
+            main = paste("Barplot:", v1, "vs", v2))    
     
     par(old_par)
     
@@ -142,7 +178,4 @@ for (pair in combos) {
     }
   }
 }
-
-
 ```
-
