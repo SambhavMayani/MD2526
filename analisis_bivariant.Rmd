@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Ajustar la ruta al dataset
 # setwd("C:/Users/AtoshiiPC/Desktop/UNI/7E QUADRI/MD/BBDD")
-setwd("Documents/UNI/MD/MD2526/")
+#setwd("Documents/UNI/MD/MD2526/")
 dd <- read.csv("Filtered_dataset.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 # Función para convertir a factor variables de texto con pocas modalidades
@@ -68,10 +68,10 @@ K <- ncol(dd)
 names(dd)
 
 # Paquete opcional
-if (!requireNamespace("psych", quietly = TRUE)) {
+#if (!requireNamespace("psych", quietly = TRUE)) {
   install.packages("psych", repos = "https://cloud.r-project.org/")
-}
-library(psych)
+#}
+#library(psych)
 
 # Funciones auxiliares
 is_numeric_var <- function(x) is.numeric(x) || is.integer(x)
@@ -158,7 +158,7 @@ for (pair in combos) {
       par(old_par)
     }
     
-    print(psych::describeBy(num, group = catvar, mat = TRUE))
+    #1print(psych::describeBy(num, group = catvar, mat = TRUE))
 
   } else if (is_categorical_var(x) && is_categorical_var(y)) {
     # CATEGORICAL vs CATEGORICAL
