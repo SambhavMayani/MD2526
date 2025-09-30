@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Ajustar la ruta al dataset
 # setwd("C:/Users/AtoshiiPC/Desktop/UNI/7E QUADRI/MD/BBDD")
+setwd("Documents/UNI/MD/MD2526/")
 dd <- read.csv("Filtered_dataset.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 # Función para convertir a factor variables de texto con pocas modalidades
