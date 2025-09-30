@@ -10,22 +10,57 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 # Ajustar la ruta al dataset
-setwd("C:/Users/AtoshiiPC/Desktop/UNI/7E QUADRI/MD/BBDD")
+# setwd("C:/Users/AtoshiiPC/Desktop/UNI/7E QUADRI/MD/BBDD")
 dd <- read.csv("Filtered_dataset.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 # Función para convertir a factor variables de texto con pocas modalidades
-auto_factorize <- function(df, max_levels = 30) {
-  for (nm in names(df)) {
-    col <- df[[nm]]
-    if (is.character(col)) {
-      uniq <- length(unique(col[!is.na(col)]))
-      if (uniq <= max_levels) df[[nm]] <- factor(col)
-    }
-    if (is.logical(col)) df[[nm]] <- factor(col, levels = c(FALSE, TRUE))
-  }
-  df
-}
-dd <- auto_factorize(dd)
+# auto_factorize <- function(df, max_levels = 30) {
+#   for (nm in names(df)) {
+#     col <- df[[nm]]
+#     if (is.character(col)) {
+#       uniq <- length(unique(col[!is.na(col)]))
+#       if (uniq <= max_levels) df[[nm]] <- factor(col)
+#     }
+#     if (is.logical(col)) df[[nm]] <- factor(col, levels = c(FALSE, TRUE))
+#   }
+#   df
+# }
+# dd <- auto_factorize(dd)
+
+# esto es para cambiar el tipo de las categoricas
+    
+    dd$SEX <- factor(dd$SEX, 
+              levels= c(0,1), 
+              labels = c("Female", "Male"))
+    dd$INF_ANAM <- factor(dd$INF_ANAM, 
+              levels= c(0,1,2,3), 
+              labels = c("zero", "one", "two", "three and more"))
+    dd$STENOK_AN <- factor(dd$STENOK_AN, 
+              levels= c(0,1,2,3,4,5,6), 
+              labels = c("never", "during the last year", "one year ago", 
+                         "two years ago", "three years ago", "4-5 years ago", "more than 5 years ago"))
+    dd$LET_IS <- factor(dd$LET_IS,                      
+              levels= c(0,1,2,3,4,5,6,7), 
+              labels = c("unknown (alive)" ,"cardiogenic shock	","pulmonary edema	",
+                         "myocardial rupture","progress of congestive heart failure",
+                         "thromboembolism", "asystole", "ventricular fibrillation"))
+    dd$GB <- factor(dd$GB,                      
+              levels= c(0,1,2,3), 
+              labels = c("there is no essential hypertension","Stage 1","Stage 2","Stage 3"))
+    dd$SIM_GIPERT <- factor(dd$SIM_GIPERT,                      
+              levels= c(0,1), 
+              labels = c("no", "yes"))
+    dd$ZSN_A <- factor(dd$ZSN_A,
+              ordered = TRUE,                           # EN R NO SE PUEDE HACER ORDEN PARCIAL! ASÍ QUE LO DEJAMOS ASÍ
+              levels= c(0,1,2,3,4), 
+              labels = c("there is no chronic heart failure",
+                         "I stage",
+                         "IIÐ stage (heart failure due to right ventricular systolic dysfunction)	",
+                         "IIÐ stage (heart failure due to left ventricular systolic dysfunction)",
+                         "IIB stage (heart failure due to left and right ventricular systolic dysfunction)"))
+    dd$endocr_01 <- factor(dd$endocr_01,                      
+              levels= c(0,1), 
+              labels = c("no", "yes"))
 
 n <- nrow(dd)
 K <- ncol(dd)
@@ -33,7 +68,7 @@ names(dd)
 
 # Paquete opcional
 if (!requireNamespace("psych", quietly = TRUE)) {
-  install.packages("psych")
+  install.packages("psych", repos = "https://cloud.r-project.org/")
 }
 library(psych)
 
