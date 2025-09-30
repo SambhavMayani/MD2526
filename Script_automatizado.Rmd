@@ -28,9 +28,7 @@ WARNING: data must have been properly declared before (factors, dates...)
 #dataset<-"planta"
 
 
-dataset<-"Filtered_dataset"
-
-
+dataset<-"nd_inputed"
 
 ```
 
@@ -40,7 +38,7 @@ ToDo: This should be a relative path
 
 #setwd("./Documents/UNI/MD/MD2526/")
 #setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-dd <- read.table("Filtered_dataset.csv", header=T, sep=",");
+dd <- read.table("nd_imputed.csv", header=T, sep=",");
 
 ```
 
