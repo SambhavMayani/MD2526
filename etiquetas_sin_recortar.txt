@@ -1,0 +1,32 @@
+    dd$SEX <- factor(dd$SEX, 
+              levels= c(0,1), 
+              labels = c("Female", "Male"))
+    dd$INF_ANAM <- factor(dd$INF_ANAM, 
+              levels= c(0,1,2,3), 
+              labels = c("zero", "one", "two", "three and more"))
+    dd$STENOK_AN <- factor(dd$STENOK_AN, 
+              levels= c(0,1,2,3,4,5,6), 
+              labels = c("never", "during the last year", "one year ago", 
+                         "two years ago", "three years ago", "4-5 years ago", "more than 5 years ago"))
+    dd$LET_IS <- factor(dd$LET_IS,                      
+              levels= c(0,1,2,3,4,5,6,7), 
+              labels = c("unknown (alive)" ,"cardiogenic shock","pulmonary edema	",
+                         "myocardial rupture","progress of congestive heart failure",
+                         "thromboembolism", "asystole", "ventricular fibrillation"))
+    dd$GB <- factor(dd$GB,                      
+              levels= c(0,1,2,3), 
+              labels = c("there is no essential hypertension","Stage 1","Stage 2","Stage 3"))
+    dd$SIM_GIPERT <- factor(dd$SIM_GIPERT,                      
+              levels= c(0,1), 
+              labels = c("no", "yes"))
+    dd$ZSN_A <- factor(dd$ZSN_A,
+              ordered = TRUE,                           # EN R NO SE PUEDE HACER ORDEN PARCIAL! ASÍ QUE LO DEJAMOS ASÍ
+              levels= c(0,1,2,3,4), 
+              labels = c("there is no chronic heart failure",
+                         "I stage",
+                         "IIÐ stage (heart failure due to right ventricular systolic dysfunction)	",
+                         "IIÐ stage (heart failure due to left ventricular systolic dysfunction)",
+                         "IIB stage (heart failure due to left and right ventricular systolic dysfunction)"))
+    dd$endocr_01 <- factor(dd$endocr_01,                      
+              levels= c(0,1), 
+              labels = c("no", "yes"))

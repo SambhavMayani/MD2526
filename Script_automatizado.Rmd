@@ -83,7 +83,19 @@ descriptiva<-function(X, nom){
     proportions<-frecs/n
     #ojo, decidir si calcular porcentages con o sin missing values
     pie(frecs, cex=0.6, main=paste("Pie of", nom))
+    
+    # 1. Guarda la configuración original de los parámetros gráficos
+    old_par <- par(no.readonly = TRUE) 
+    
+    # 2. Establece los nuevos márgenes (ej: 10 líneas para el margen inferior)
+    par(mar = c(10, 4, 4, 2)) 
+
+    
     barplot(frecs, las=3, cex.names=0.7, main=paste("Barplot of", nom), col=listOfColors)
+    
+    
+    par(old_par)
+    
     print(paste("Number of modalities: ", length(frecs)))
     print("Frequency table")
     print(frecs)
@@ -114,6 +126,13 @@ descriptiva<-function(X, nom){
    
 }
 
+factor_with_na <- function(x, levels, labels, ordered = FALSE) {
+  f <- factor(x, levels = levels, labels = labels, ordered = ordered)
+  f <- addNA(f)   # convierte los NA en un nivel extra
+  levels(f)[is.na(levels(f))] <- "NA"
+  return(f)
+}
+
 #dataset<-dd
 actives<-c(1:K)
 #colDate<-1
@@ -134,38 +153,39 @@ listOfColors<-rainbow(39)
 
 # esto es para cambiar el tipo de las categoricas
     
-    dd$SEX <- factor(dd$SEX, 
+    dd$SEX <- factor_with_na(dd$SEX, 
               levels= c(0,1), 
               labels = c("Female", "Male"))
-    dd$INF_ANAM <- factor(dd$INF_ANAM, 
+    dd$INF_ANAM <- factor_with_na(dd$INF_ANAM, 
               levels= c(0,1,2,3), 
-              labels = c("zero", "one", "two", "three and more"))
-    dd$STENOK_AN <- factor(dd$STENOK_AN, 
+              labels = c("zero", "one", "two", ">=three"))
+    dd$STENOK_AN <- factor_with_na(dd$STENOK_AN, 
               levels= c(0,1,2,3,4,5,6), 
-              labels = c("never", "during the last year", "one year ago", 
-                         "two years ago", "three years ago", "4-5 years ago", "more than 5 years ago"))
-    dd$LET_IS <- factor(dd$LET_IS,                      
+              labels = c("never", "last year", "one year ago", 
+                         "two years ago", "three years ago", "4-5 years ago", ">=5 years ago"))
+    dd$LET_IS <- factor_with_na(dd$LET_IS,                      
               levels= c(0,1,2,3,4,5,6,7), 
-              labels = c("unknown (alive)" ,"cardiogenic shock	","pulmonary edema	",
-                         "myocardial rupture","progress of congestive heart failure",
+              labels = c("unknown (alive)" ,"cardiogenic shock","pulmonary edema",
+                         "myocardial rupture","progress of congestive HF",
                          "thromboembolism", "asystole", "ventricular fibrillation"))
-    dd$GB <- factor(dd$GB,                      
+    dd$GB <- factor_with_na(dd$GB,                      
               levels= c(0,1,2,3), 
-              labels = c("there is no essential hypertension","Stage 1","Stage 2","Stage 3"))
-    dd$SIM_GIPERT <- factor(dd$SIM_GIPERT,                      
+              labels = c("there is no EH","Stage 1","Stage 2","Stage 3"))
+    dd$SIM_GIPERT <- factor_with_na(dd$SIM_GIPERT,                      
               levels= c(0,1), 
               labels = c("no", "yes"))
-    dd$ZSN_A <- factor(dd$ZSN_A,
+    dd$ZSN_A <- factor_with_na(dd$ZSN_A,
               ordered = TRUE,                           # EN R NO SE PUEDE HACER ORDEN PARCIAL! ASÍ QUE LO DEJAMOS ASÍ
               levels= c(0,1,2,3,4), 
-              labels = c("there is no chronic heart failure",
+              labels = c("there is no CHF",
                          "I stage",
-                         "IIÐ stage (heart failure due to right ventricular systolic dysfunction)	",
-                         "IIÐ stage (heart failure due to left ventricular systolic dysfunction)",
-                         "IIB stage (heart failure due to left and right ventricular systolic dysfunction)"))
-    dd$endocr_01 <- factor(dd$endocr_01,                      
+                         "IIÐ stage (HF due to R VSD)",
+                         "IIÐ stage (HF due to L VSD)",
+                         "IIB stage (HF due to L and R VSD)"))
+    dd$endocr_01 <- factor_with_na(dd$endocr_01,                      
               levels= c(0,1), 
               labels = c("no", "yes"))
+
 
 par(ask=TRUE)
 for(k in actives){
