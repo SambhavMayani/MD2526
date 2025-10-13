@@ -28,9 +28,7 @@ WARNING: data must have been properly declared before (factors, dates...)
 #dataset<-"planta"
 
 
-dataset<-"Filtered_dataset"
-
-
+dataset<-"nd_inputed"
 
 ```
 
@@ -82,7 +80,7 @@ descriptiva<-function(X, nom){
     frecs<-table(as.factor(X), useNA="ifany")
     proportions<-frecs/n
     #ojo, decidir si calcular porcentages con o sin missing values
-    pie(frecs, cex=0.6, main=paste("Pie of", nom))
+    #pie(frecs, cex=0.6, main=paste("Pie of", nom))
     
     # 1. Guarda la configuración original de los parámetros gráficos
     old_par <- par(no.readonly = TRUE) 
