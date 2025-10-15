@@ -1,8 +1,8 @@
 
 #Retrieve the data saved AFTER the preprocessing practice...... this means data already cleaned
 
-setwd("D:/karina/docencia/areferenciesPPT/0DadesPractiques/CREDSCO")
-dd <- read.csv("credscoClean.csv", sep=";");
+setwd("C:/Users/sambh/Desktop/UNI/4-Q1/MD/MD")
+dd <- read.csv("preprocessed_final.csv", sep=";");
 names(dd)
 dim(dd)
 summary(dd)
@@ -14,20 +14,15 @@ names(dd)
 
 #hierarchical clustering
 
-#euclidean distance si totes son numeriques
-dcon<-data.frame (Antiguedad.Trabajo,Plazo,Edad,Gastos,Ingresos,Patrimonio,Cargas.patrimoniales,Importe.solicitado,Precio.del.bien.financiado,Estalvi, RatiFin)
-  
-d  <- dist(dcon[1:10,])
-
 #move to Gower mixed distance to deal 
-#simoultaneously with numerical and qualitative data
+#simoultaneously with numerical and qualitative datagit 
 
 library(cluster)
 
 #dissimilarity matrix
 #do not include in actives the identifier variables nor the potential response variable
 
-actives<-c(2:16)
+actives<-c(1:16)
 dissimMatrix <- daisy(dd[,actives], metric = "gower", stand=TRUE)
 
 distMatrix<-dissimMatrix^2

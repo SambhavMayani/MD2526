@@ -1,0 +1,719 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\#7TotaldescriptivaClean5.Rmd \#install.packages(``rmarkdown'')
+\#library(``rmarkdown'')
+
+READING CREDSCO.CSV. NOTE: Change the path of the file for the proper
+one in your computer.
+
+Remember that subfolders must be indicated by ``/'' and not by ``"
+
+Here you can write the introduction of your report and include some text
+that will be transferred to the word file every time you re-run this
+Markdown
+
+WARNING: data must have been properly declared before (factors,
+dates\ldots)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# dd \textless{}{-} read.table("D:/karina/docencia/areferenciesPPT/0DadesPractiques/CREDSCO/credscoCategoriques2.csv",header=T, sep=";", dec=",")}
+\CommentTok{\#dd\textless{}{-} read.csv("D:/karina/TFGs/GrauEstadistica/MarcPinar/data.csv", sep=";")}
+
+\CommentTok{\#dataset\textless{}{-}"platjaDaro"}
+\CommentTok{\#dataset\textless{}{-}"futbol"}
+
+\CommentTok{\#setwd("D:/karina/projectes/ON/a2020INSESSCOVIDisocial/18DadesTallers")}
+\CommentTok{\#dd\textless{}{-} read.table("2Formulari5TPlataDarov1.csv",header=T, sep=",", dec=".", na.strings="*");}
+\CommentTok{\#dataset\textless{}{-}"planta"}
+
+
+\NormalTok{dataset}\OtherTok{\textless{}{-}}\StringTok{"nd\_inputed"}
+\end{Highlighting}
+\end{Shaded}
+
+Set the folder where the word file is going to be generated ToDo: This
+should be a relative path
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#setwd("./Documents/UNI/MD/MD2526/")}
+\CommentTok{\#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))}
+\NormalTok{dd }\OtherTok{\textless{}{-}} \FunctionTok{read.table}\NormalTok{(}\StringTok{"Filtered\_dataset.csv"}\NormalTok{, }\AttributeTok{header=}\NormalTok{T, }\AttributeTok{sep=}\StringTok{","}\NormalTok{);}
+\end{Highlighting}
+\end{Shaded}
+
+Check the type of the R object created for the dataset
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(dd)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+
+without including the R instruction in the final document
+
+\begin{verbatim}
+## [1] "data.frame"
+\end{verbatim}
+
+Get dimensions of the dataset
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(dd)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1700   16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n}\OtherTok{\textless{}{-}}\FunctionTok{dim}\NormalTok{(dd)[}\DecValTok{1}\NormalTok{]}
+\NormalTok{K}\OtherTok{\textless{}{-}}\FunctionTok{dim}\NormalTok{(dd)[}\DecValTok{2}\NormalTok{]}
+
+\NormalTok{n}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1700
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{K}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 16
+\end{verbatim}
+
+Check the variables
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{names}\NormalTok{(dd)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "AGE"        "SEX"        "INF_ANAM"   "STENOK_AN"  "GB"        
+##  [6] "SIM_GIPERT" "ZSN_A"      "endocr_01"  "S_AD_ORIT"  "D_AD_ORIT" 
+## [11] "K_BLOOD"    "NA_BLOOD"   "L_BLOOD"    "ROE"        "COM_SUM"   
+## [16] "LET_IS"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data.frame}\NormalTok{(}\AttributeTok{ID =} \FunctionTok{seq\_along}\NormalTok{(dd), }\AttributeTok{Name =} \FunctionTok{names}\NormalTok{(dd))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    ID       Name
+## 1   1        AGE
+## 2   2        SEX
+## 3   3   INF_ANAM
+## 4   4  STENOK_AN
+## 5   5         GB
+## 6   6 SIM_GIPERT
+## 7   7      ZSN_A
+## 8   8  endocr_01
+## 9   9  S_AD_ORIT
+## 10 10  D_AD_ORIT
+## 11 11    K_BLOOD
+## 12 12   NA_BLOOD
+## 13 13    L_BLOOD
+## 14 14        ROE
+## 15 15    COM_SUM
+## 16 16     LET_IS
+\end{verbatim}
+
+Decide if you need to declare some more factor or date
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{descriptiva}\OtherTok{\textless{}{-}}\ControlFlowTok{function}\NormalTok{(X, nom)\{}
+  \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\NormalTok{(}\FunctionTok{is.numeric}\NormalTok{(X)))\{ }
+    \CommentTok{\# Categoricas}
+    
+\NormalTok{    frecs}\OtherTok{\textless{}{-}}\FunctionTok{table}\NormalTok{(}\FunctionTok{as.factor}\NormalTok{(X), }\AttributeTok{useNA=}\StringTok{"ifany"}\NormalTok{)}
+\NormalTok{    proportions}\OtherTok{\textless{}{-}}\NormalTok{frecs}\SpecialCharTok{/}\NormalTok{n}
+    \CommentTok{\#ojo, decidir si calcular porcentages con o sin missing values}
+    \CommentTok{\#pie(frecs, cex=0.6, main=paste("Pie of", nom))}
+    
+    \CommentTok{\# 1. Guarda la configuración original de los parámetros gráficos}
+\NormalTok{    old\_par }\OtherTok{\textless{}{-}} \FunctionTok{par}\NormalTok{(}\AttributeTok{no.readonly =} \ConstantTok{TRUE}\NormalTok{) }
+    
+    \CommentTok{\# 2. Establece los nuevos márgenes (ej: 10 líneas para el margen inferior)}
+    \FunctionTok{par}\NormalTok{(}\AttributeTok{mar =} \FunctionTok{c}\NormalTok{(}\DecValTok{10}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{2}\NormalTok{)) }
+
+    
+    \FunctionTok{barplot}\NormalTok{(frecs, }\AttributeTok{las=}\DecValTok{3}\NormalTok{, }\AttributeTok{cex.names=}\FloatTok{0.7}\NormalTok{, }\AttributeTok{main=}\FunctionTok{paste}\NormalTok{(}\StringTok{"Barplot of"}\NormalTok{, nom), }\AttributeTok{col=}\NormalTok{listOfColors)}
+    
+    
+    \FunctionTok{par}\NormalTok{(old\_par)}
+    
+    \FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Number of modalities: "}\NormalTok{, }\FunctionTok{length}\NormalTok{(frecs)))}
+    \FunctionTok{print}\NormalTok{(}\StringTok{"Frequency table"}\NormalTok{)}
+    \FunctionTok{print}\NormalTok{(frecs)}
+    \FunctionTok{print}\NormalTok{(}\StringTok{"Relative frequency table (proportions)"}\NormalTok{)}
+    \FunctionTok{print}\NormalTok{(proportions)}
+    \FunctionTok{print}\NormalTok{(}\StringTok{"Frequency table sorted"}\NormalTok{)}
+    \FunctionTok{print}\NormalTok{(}\FunctionTok{sort}\NormalTok{(frecs, }\AttributeTok{decreasing=}\ConstantTok{TRUE}\NormalTok{))}
+    \FunctionTok{print}\NormalTok{(}\StringTok{"Relative frequency table (proportions) sorted"}\NormalTok{)}
+    \FunctionTok{print}\NormalTok{(}\FunctionTok{sort}\NormalTok{(proportions, }\AttributeTok{decreasing=}\ConstantTok{TRUE}\NormalTok{))}
+    
+\NormalTok{   \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+       \CommentTok{\# Numericas}
+       
+       \FunctionTok{hist}\NormalTok{(X, }\AttributeTok{main=}\FunctionTok{paste}\NormalTok{(}\StringTok{"Histogram of"}\NormalTok{, nom))}
+       \FunctionTok{boxplot}\NormalTok{(X, }\AttributeTok{horizontal=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{main=}\FunctionTok{paste}\NormalTok{(}\StringTok{"Boxplot of"}\NormalTok{,nom))}
+       \FunctionTok{print}\NormalTok{(}\StringTok{"Extended Summary Statistics"}\NormalTok{)}
+       \FunctionTok{print}\NormalTok{(}\FunctionTok{summary}\NormalTok{(X))}
+       \FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"sd: "}\NormalTok{, }\FunctionTok{sd}\NormalTok{(X, }\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)))}
+       \FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"vc: "}\NormalTok{, }\FunctionTok{sd}\NormalTok{(X, }\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)}\SpecialCharTok{/}\FunctionTok{mean}\NormalTok{(X, }\AttributeTok{na.rm=}\ConstantTok{TRUE}\NormalTok{)))}
+       \FunctionTok{print}\NormalTok{(}\StringTok{"Q{-}Q plot "}\NormalTok{)}
+      \FunctionTok{qqnorm}\NormalTok{(X, }\AttributeTok{main =} \FunctionTok{paste}\NormalTok{(}\StringTok{"QQ Plot of"}\NormalTok{, nom)) }\CommentTok{\# Crea el gráfico Q{-}Q}
+      \FunctionTok{qqline}\NormalTok{(X, }\AttributeTok{col=}\StringTok{"red"}\NormalTok{) }\CommentTok{\# Añade la línea de referencia normal}
+
+\NormalTok{      shapiro}\OtherTok{\textless{}{-}} \FunctionTok{shapiro.test}\NormalTok{(X)}
+      \FunctionTok{print}\NormalTok{(shapiro)}
+\NormalTok{  \}}
+   
+\NormalTok{\}}
+
+\NormalTok{factor\_with\_na }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, levels, labels, }\AttributeTok{ordered =} \ConstantTok{FALSE}\NormalTok{) \{}
+\NormalTok{  f }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(x, }\AttributeTok{levels =}\NormalTok{ levels, }\AttributeTok{labels =}\NormalTok{ labels, }\AttributeTok{ordered =}\NormalTok{ ordered)}
+\NormalTok{  f }\OtherTok{\textless{}{-}} \FunctionTok{addNA}\NormalTok{(f)   }\CommentTok{\# convierte los NA en un nivel extra}
+  \FunctionTok{levels}\NormalTok{(f)[}\FunctionTok{is.na}\NormalTok{(}\FunctionTok{levels}\NormalTok{(f))] }\OtherTok{\textless{}{-}} \StringTok{"NA"}
+  \FunctionTok{return}\NormalTok{(f)}
+\NormalTok{\}}
+
+\CommentTok{\#dataset\textless{}{-}dd}
+\NormalTok{actives}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{K)}
+\CommentTok{\#colDate\textless{}{-}1}
+\CommentTok{\#if (dataset=="platjaDaro")}
+\CommentTok{\#  \{dd[,colDate]\textless{}{-}as.Date(dd[, colDate], format="\%d/\%m/\%y \%h:\%m:\%s")}
+\CommentTok{\#   actives\textless{}{-}c(3:44)}
+\CommentTok{\#   \}}
+\end{Highlighting}
+\end{Shaded}
+
+Basic descriptive analysis for numerical variables
+
+(decide the maximum number of colors you can need in a graph based on
+your metadata file)
+
+\begin{verbatim}
+## [1] "variable  2 : SEX"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-1.pdf}}
+
+\begin{verbatim}
+## [1] "Number of modalities:  3"
+## [1] "Frequency table"
+## 
+## Female   Male     NA 
+##    635   1065      0 
+## [1] "Relative frequency table (proportions)"
+## 
+##    Female      Male        NA 
+## 0.3735294 0.6264706 0.0000000 
+## [1] "Frequency table sorted"
+## 
+##   Male Female     NA 
+##   1065    635      0 
+## [1] "Relative frequency table (proportions) sorted"
+## 
+##      Male    Female        NA 
+## 0.6264706 0.3735294 0.0000000 
+## [1] "variable  3 : INF_ANAM"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-2.pdf}}
+
+\begin{verbatim}
+## [1] "Number of modalities:  5"
+## [1] "Frequency table"
+## 
+##    zero     one     two >=three      NA 
+##    1060     410     147      79       4 
+## [1] "Relative frequency table (proportions)"
+## 
+##        zero         one         two     >=three          NA 
+## 0.623529412 0.241176471 0.086470588 0.046470588 0.002352941 
+## [1] "Frequency table sorted"
+## 
+##    zero     one     two >=three      NA 
+##    1060     410     147      79       4 
+## [1] "Relative frequency table (proportions) sorted"
+## 
+##        zero         one         two     >=three          NA 
+## 0.623529412 0.241176471 0.086470588 0.046470588 0.002352941 
+## [1] "variable  4 : STENOK_AN"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-3.pdf}}
+
+\begin{verbatim}
+## [1] "Number of modalities:  8"
+## [1] "Frequency table"
+## 
+##           never       last year    one year ago   two years ago three years ago 
+##             661             146             137             117              76 
+##   4-5 years ago   >=5 years ago              NA 
+##             125             332             106 
+## [1] "Relative frequency table (proportions)"
+## 
+##           never       last year    one year ago   two years ago three years ago 
+##      0.38882353      0.08588235      0.08058824      0.06882353      0.04470588 
+##   4-5 years ago   >=5 years ago              NA 
+##      0.07352941      0.19529412      0.06235294 
+## [1] "Frequency table sorted"
+## 
+##           never   >=5 years ago       last year    one year ago   4-5 years ago 
+##             661             332             146             137             125 
+##   two years ago              NA three years ago 
+##             117             106              76 
+## [1] "Relative frequency table (proportions) sorted"
+## 
+##           never   >=5 years ago       last year    one year ago   4-5 years ago 
+##      0.38882353      0.19529412      0.08588235      0.08058824      0.07352941 
+##   two years ago              NA three years ago 
+##      0.06882353      0.06235294      0.04470588 
+## [1] "variable  5 : GB"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-4.pdf}}
+
+\begin{verbatim}
+## [1] "Number of modalities:  5"
+## [1] "Frequency table"
+## 
+## there is no EH        Stage 1        Stage 2        Stage 3             NA 
+##            605             11            880            195              9 
+## [1] "Relative frequency table (proportions)"
+## 
+## there is no EH        Stage 1        Stage 2        Stage 3             NA 
+##    0.355882353    0.006470588    0.517647059    0.114705882    0.005294118 
+## [1] "Frequency table sorted"
+## 
+##        Stage 2 there is no EH        Stage 3        Stage 1             NA 
+##            880            605            195             11              9 
+## [1] "Relative frequency table (proportions) sorted"
+## 
+##        Stage 2 there is no EH        Stage 3        Stage 1             NA 
+##    0.517647059    0.355882353    0.114705882    0.006470588    0.005294118 
+## [1] "variable  6 : SIM_GIPERT"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-5.pdf}}
+
+\begin{verbatim}
+## [1] "Number of modalities:  3"
+## [1] "Frequency table"
+## 
+##   no  yes   NA 
+## 1635   57    8 
+## [1] "Relative frequency table (proportions)"
+## 
+##          no         yes          NA 
+## 0.961764706 0.033529412 0.004705882 
+## [1] "Frequency table sorted"
+## 
+##   no  yes   NA 
+## 1635   57    8 
+## [1] "Relative frequency table (proportions) sorted"
+## 
+##          no         yes          NA 
+## 0.961764706 0.033529412 0.004705882 
+## [1] "variable  7 : ZSN_A"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-6.pdf}}
+
+\begin{verbatim}
+## [1] "Number of modalities:  6"
+## [1] "Frequency table"
+## 
+##                   there is no CHF                           I stage 
+##                              1468                               103 
+##       IIÐ stage (HF due to R VSD)       IIÐ stage (HF due to L VSD) 
+##                                27                                29 
+## IIB stage (HF due to L and R VSD)                                NA 
+##                                19                                54 
+## [1] "Relative frequency table (proportions)"
+## 
+##                   there is no CHF                           I stage 
+##                        0.86352941                        0.06058824 
+##       IIÐ stage (HF due to R VSD)       IIÐ stage (HF due to L VSD) 
+##                        0.01588235                        0.01705882 
+## IIB stage (HF due to L and R VSD)                                NA 
+##                        0.01117647                        0.03176471 
+## [1] "Frequency table sorted"
+## 
+##                   there is no CHF                           I stage 
+##                              1468                               103 
+##                                NA       IIÐ stage (HF due to L VSD) 
+##                                54                                29 
+##       IIÐ stage (HF due to R VSD) IIB stage (HF due to L and R VSD) 
+##                                27                                19 
+## [1] "Relative frequency table (proportions) sorted"
+## 
+##                   there is no CHF                           I stage 
+##                        0.86352941                        0.06058824 
+##                                NA       IIÐ stage (HF due to L VSD) 
+##                        0.03176471                        0.01705882 
+##       IIÐ stage (HF due to R VSD) IIB stage (HF due to L and R VSD) 
+##                        0.01588235                        0.01117647 
+## [1] "variable  8 : endocr_01"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-7.pdf}}
+
+\begin{verbatim}
+## [1] "Number of modalities:  3"
+## [1] "Frequency table"
+## 
+##   no  yes   NA 
+## 1461  228   11 
+## [1] "Relative frequency table (proportions)"
+## 
+##          no         yes          NA 
+## 0.859411765 0.134117647 0.006470588 
+## [1] "Frequency table sorted"
+## 
+##   no  yes   NA 
+## 1461  228   11 
+## [1] "Relative frequency table (proportions) sorted"
+## 
+##          no         yes          NA 
+## 0.859411765 0.134117647 0.006470588 
+## [1] "variable  9 : S_AD_ORIT"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-8.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-9.pdf}}
+
+\begin{verbatim}
+## [1] "Extended Summary Statistics"
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##     0.0   120.0   130.0   134.6   150.0   260.0     267 
+## [1] "sd:  31.34838794429"
+## [1] "vc:  0.232920643580575"
+## [1] "Q-Q plot "
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-10.pdf}}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  X
+## W = 0.96085, p-value < 2.2e-16
+## 
+## [1] "variable  10 : D_AD_ORIT"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-11.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-12.pdf}}
+
+\begin{verbatim}
+## [1] "Extended Summary Statistics"
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##    0.00   80.00   80.00   82.75   90.00  190.00     267 
+## [1] "sd:  18.321063184769"
+## [1] "vc:  0.221403976587738"
+## [1] "Q-Q plot "
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-13.pdf}}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  X
+## W = 0.87857, p-value < 2.2e-16
+## 
+## [1] "variable  11 : K_BLOOD"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-14.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-15.pdf}}
+
+\begin{verbatim}
+## [1] "Extended Summary Statistics"
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##   2.300   3.700   4.100   4.191   4.600   8.200     371 
+## [1] "sd:  0.754076378013344"
+## [1] "vc:  0.179909433142994"
+## [1] "Q-Q plot "
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-16.pdf}}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  X
+## W = 0.95587, p-value < 2.2e-16
+## 
+## [1] "variable  12 : NA_BLOOD"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-17.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-18.pdf}}
+
+\begin{verbatim}
+## [1] "Extended Summary Statistics"
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##   117.0   133.0   136.0   136.6   140.0   169.0     375 
+## [1] "sd:  6.5121204287015"
+## [1] "vc:  0.0476900434865942"
+## [1] "Q-Q plot "
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-19.pdf}}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  X
+## W = 0.98009, p-value = 1.485e-12
+## 
+## [1] "variable  13 : L_BLOOD"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-20.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-21.pdf}}
+
+\begin{verbatim}
+## [1] "Extended Summary Statistics"
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##   2.000   6.400   8.000   8.783  10.450  27.900     125 
+## [1] "sd:  3.40055701426411"
+## [1] "vc:  0.3871786634415"
+## [1] "Q-Q plot "
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-22.pdf}}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  X
+## W = 0.91225, p-value < 2.2e-16
+## 
+## [1] "variable  14 : ROE"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-23.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-24.pdf}}
+
+\begin{verbatim}
+## [1] "Extended Summary Statistics"
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##    1.00    5.00   10.00   13.44   18.00  140.00     203 
+## [1] "sd:  11.2963159310538"
+## [1] "vc:  0.840194015441326"
+## [1] "Q-Q plot "
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-25.pdf}}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  X
+## W = 0.81101, p-value < 2.2e-16
+## 
+## [1] "variable  15 : COM_SUM"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-26.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-27.pdf}}
+
+\begin{verbatim}
+## [1] "Extended Summary Statistics"
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.0000  0.0000  0.0000  0.1118  0.0000  2.0000 
+## [1] "sd:  0.327981597233457"
+## [1] "vc:  2.93457218577304"
+## [1] "Q-Q plot "
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-28.pdf}}
+
+\begin{verbatim}
+## 
+##  Shapiro-Wilk normality test
+## 
+## data:  X
+## W = 0.36208, p-value < 2.2e-16
+## 
+## [1] "variable  16 : LET_IS"
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Script_automatizado_files/figure-latex/unnamed-chunk-8-29.pdf}}
+
+\begin{verbatim}
+## [1] "Number of modalities:  9"
+## [1] "Frequency table"
+## 
+##           unknown (alive)         cardiogenic shock           pulmonary edema 
+##                      1429                       110                        18 
+##        myocardial rupture progress of congestive HF           thromboembolism 
+##                        54                        23                        12 
+##                  asystole  ventricular fibrillation                        NA 
+##                        27                        27                         0 
+## [1] "Relative frequency table (proportions)"
+## 
+##           unknown (alive)         cardiogenic shock           pulmonary edema 
+##               0.840588235               0.064705882               0.010588235 
+##        myocardial rupture progress of congestive HF           thromboembolism 
+##               0.031764706               0.013529412               0.007058824 
+##                  asystole  ventricular fibrillation                        NA 
+##               0.015882353               0.015882353               0.000000000 
+## [1] "Frequency table sorted"
+## 
+##           unknown (alive)         cardiogenic shock        myocardial rupture 
+##                      1429                       110                        54 
+##                  asystole  ventricular fibrillation progress of congestive HF 
+##                        27                        27                        23 
+##           pulmonary edema           thromboembolism                        NA 
+##                        18                        12                         0 
+## [1] "Relative frequency table (proportions) sorted"
+## 
+##           unknown (alive)         cardiogenic shock        myocardial rupture 
+##               0.840588235               0.064705882               0.031764706 
+##                  asystole  ventricular fibrillation progress of congestive HF 
+##               0.015882353               0.015882353               0.013529412 
+##           pulmonary edema           thromboembolism                        NA 
+##               0.010588235               0.007058824               0.000000000
+\end{verbatim}
+
+\end{document}
