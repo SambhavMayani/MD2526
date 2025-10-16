@@ -2,7 +2,7 @@
 #Retrieve the data saved AFTER the preprocessing practice...... this means data already cleaned
 
 setwd("C:/Users/sambh/Desktop/UNI/4-Q1/MD/MD")
-dd <- read.csv("preprocessed_final.csv", sep=";");
+dd <- read.csv("preprocessed_final.csv", sep=",");
 names(dd)
 dim(dd)
 summary(dd)
@@ -22,6 +22,40 @@ library(cluster)
 #dissimilarity matrix
 #do not include in actives the identifier variables nor the potential response variable
 
+
+dd$SEX <- factor(dd$SEX, 
+                         levels= c(0,1), 
+                         labels = c("Female", "Male"))
+dd$INF_ANAM <- factor(dd$INF_ANAM, 
+                              levels= c(0,1,2,3), 
+                              labels = c("zero", "one", "two", ">=three"))
+dd$STENOK_AN <- factor(dd$STENOK_AN, 
+                               levels= c(0,1,2,3,4,5,6), 
+                               labels = c("never", "last year", "one year ago", 
+                                          "two years ago", "three years ago", "4-5 years ago", ">=5 years ago"))
+dd$LET_IS <- factor(dd$LET_IS,                      
+                            levels= c(0,1,2,3,4,5,6,7), 
+                            labels = c("unknown (alive)" ,"cardiogenic shock","pulmonary edema",
+                                       "myocardial rupture","progress of congestive HF",
+                                       "thromboembolism", "asystole", "ventricular fibrillation"))
+dd$GB <- factor(dd$GB,                      
+                        levels= c(0,1,2,3), 
+                        labels = c("there is no EH","Stage 1","Stage 2","Stage 3"))
+dd$SIM_GIPERT <- factor(dd$SIM_GIPERT,                      
+                                levels= c(0,1), 
+                                labels = c("no", "yes"))
+dd$ZSN_A <- factor(dd$ZSN_A,
+                           ordered = TRUE,                           # EN R NO SE PUEDE HACER ORDEN PARCIAL! ASÍ QUE LO DEJAMOS ASÍ
+                           levels= c(0,1,2,3,4), 
+                           labels = c("there is no CHF",
+                                      "I stage",
+                                      "IIÐ stage (HF due to R VSD)",
+                                      "IIÐ stage (HF due to L VSD)",
+                                      "IIB stage (HF due to L and R VSD)"))
+dd$endocr_01 <- factor(dd$endocr_01,                      
+                               levels= c(0,1), 
+                               labels = c("no", "yes"))
+
 actives<-c(1:16)
 dissimMatrix <- daisy(dd[,actives], metric = "gower", stand=TRUE)
 
@@ -29,23 +63,35 @@ distMatrix<-dissimMatrix^2
 
 h1 <- hclust(distMatrix,method="ward.D2")  # NOTICE THE COST
 #versions noves "ward.D" i abans de plot: par(mar=rep(2,4)) si se quejara de los margenes del plot
+plot(h1, labels = FALSE, hang = -1, main = "Dendrograma (sin labels)")
+
 
 plot(h1)
 
 k<-4
 
 c2 <- cutree(h1,k)
+c1 <- cutree(h1,8)
 
 #class sizes 
 table(c2)
 
 #comparing with other partitions
-#table(c1,c2)
+table(c1,c2)
+
+
+# Silhouette para k = 4
+sil4 <- silhouette(c2, distMatrix)
+mean(sil4[, 3])   # promedio silhouette
+
+# Silhouette para k = 7
+sil7 <- silhouette(c1, distMatrix)
+mean(sil7[, 3])   # promedio silhouette
 
 # LETS SEE THE PARTITION VISUALLY
 
 c1<-c2
-plot(Edad,Estalvi,col=c1,main="Clustering of credit data in 3 classes")
+plot(AGE,K_BLOOD,col=c1,main="Clustering of credit data in 3 classes")
 legend("topright",c("class1","class2","class3","class4"),pch=1,col=c(1:k))
 
 
