@@ -2,8 +2,11 @@
 # load("d:/karina/docencia/DataMiningEI/Practiques/2CredscoProfiling/credscok_bin")
 
 #read data only if required
-setwd("D:/karina/docencia/01areferenciesPPT/0DadesPractiques/CREDSCO")
-dd <- read.table("CredScoClean.csv",header=T, sep=";", dec='.');
+#setwd("D:/karina/docencia/01areferenciesPPT/0DadesPractiques/CREDSCO")
+setwd("~/Documents/UNI/MD/MD2526/")
+
+#dd <- read.table("CredScoClean.csv",header=T, sep=";", dec='.');
+dd <- read.table("preprocessed_final.csv",header=T, sep=";", dec='.');
                   
 names(dd)
 
@@ -183,8 +186,8 @@ for(k in 1:K){
       barplot(table(dades[,k], as.factor(P)), beside=TRUE,col=paleta)
       legend("topright",levels(as.factor(dades[,k])),pch=1,cex=0.5, col=paleta)
    
-      print("Test Chi quadrat: ")
-      print(chisq.test(dades[,k], as.factor(P)))
+      #print("Test Chi quadrat: ")
+      #print(chisq.test(dades[,k], as.factor(P)))
    
       print("valorsTest:")
       print( ValorTestXquali(P,dades[,k]))
@@ -205,3 +208,4 @@ for (c in 1:length(levels(as.factor(P)))) {
 
 #saving the dataframe in an external file
 #write.table(dd, file = "credscoClean.csv", sep = ";", na = "NA", dec = ".", row.names = FALSE, col.names = TRUE)
+
